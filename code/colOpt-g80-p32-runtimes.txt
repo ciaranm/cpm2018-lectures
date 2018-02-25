@@ -1,0 +1,23 @@
+$ mzn-gecode colOpt.mzn g80.dzn -a -s
+%%  runtime:       6:32.621 (392621.621 ms)
+%%  runtime:       6:31.311 (391311.168 ms)
+%%  runtime:       6:31.314 (391314.705 ms)
+%%  runtime:       6:30.360 (390360.443 ms)
+%%  runtime:       6:31.217 (391217.210 ms)
+%%  runtime:       6:33.723 (393723.672 ms)
+%%  runtime:       6:31.279 (391279.313 ms)
+%%  runtime:       6:30.765 (390765.244 ms)
+%%  runtime:       6:31.057 (391057.970 ms)
+%%  runtime:       6:30.460 (390460.464 ms)
+
+$ mzn-gecode colOpt.mzn g80.dzn -a -s -p32
+%%  runtime:       1:31.237 (91237.601 ms)
+%%  runtime:       22.783 (22783.639 ms)
+%%  runtime:       1:33.024 (93024.102 ms)
+%%  runtime:       23.844 (23844.334 ms)
+%%  runtime:       1:32.932 (92932.198 ms)
+%%  runtime:       24.415 (24415.674 ms)
+%%  runtime:       26.329 (26329.784 ms)
+%%  runtime:       1:31.005 (91005.068 ms)
+%%  runtime:       1:17.512 (77512.379 ms)
+%%  runtime:       1:33.766 (93766.558 ms)

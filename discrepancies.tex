@@ -309,8 +309,11 @@
                 \item Highest degree to lowest.
             \end{itemize}
     \end{itemize}
+}\only<4>{
+    \includegraphics{gen-graph-value-ordering-heuristics.pdf}%
+}\only<5>{
+    \includegraphics{gen-graph-value-ordering-heuristics-unsat.pdf}%
 }
-
 \end{frame}
 
 \begin{frame}{Heuristics and Discrepancies}
@@ -417,6 +420,7 @@
 \end{frame}
 
 \begin{frame}{Depth-Bounded Discrepancy Search}
+    \only<1>{
     \centering\includegraphics[keepaspectratio=true,scale=0.2]{dds-paper.png}
     \vspace{1em}
 
@@ -426,11 +430,14 @@
             \item If the second claim \emph{is} important, why not emphasise it more?
 
             \item Depth-bounded discrepancy search considers $k$ discrepancies, but only at depth up
-                to $k - 1$ (but in which order?).
+                to $k - 1$.
         \end{itemize}
         \column{.45\textwidth}
         \centering\includegraphics[keepaspectratio=true,scale=0.2]{dds-tree.png}
     \end{columns}
+}\only<2>{
+    \centering\includegraphics[keepaspectratio=true,scale=0.15]{dds-impl.png}
+}
 \end{frame}
 
 \begin{frame}{DDS for Subgraph Isomorphism}
@@ -438,27 +445,35 @@
 \end{frame}
 
 \begin{frame}{Restarts?}
-    \only<1>{%
+    \only<1>{
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.15]{restarts-paper.png}
+    }\only<2>{%
         \begin{itemize}
             \item Run for a bit, then restart and try something else.
             \item Need to change something when we restart: what about just using a random
                 value-ordering heuristic?
         \end{itemize}
-    }\only<2> {%
-        \includegraphics{gen-graph-scatter-random-goods.pdf}
     }\only<3> {%
+        \includegraphics{gen-graph-scatter-random-goods.pdf}
+    }\only<4> {%
+        \centering
+        \includegraphics[keepaspectratio=true,scale=0.3]{nogoods-paper.png}
+        \vspace{1em}
         \begin{itemize}
             \item Use nogood recording to avoid revisiting parts of the search space?
         \end{itemize}
-    }\only<4> {%
-        \includegraphics{gen-graph-scatter-random.pdf}
     }\only<5> {%
+        \includegraphics{gen-graph-scatter-random.pdf}
+    }\only<6> {%
         \begin{itemize}
         \item Select a vertex $v'$ from the chosen domain $D_v$ with
             probability \[ p(v') = \frac{2^{\deg(v')}}{\sum_{w \in D_v}{2^{\deg(w)}}} \text{.} \]
         \end{itemize}
-    }\only<6> {%
+    }\only<7> {%
         \includegraphics{gen-graph-scatter-final.pdf}
+    }\only<8> {
+        \includegraphics{gen-graph-restarts.pdf}%
     }
 \end{frame}
 

@@ -1,0 +1,24 @@
+$ mzn-gecode colDec.mzn g80.dzn -s -Dk=12
+=====UNSATISFIABLE=====
+%%  runtime:       4:10.639 (250639.167 ms)
+%%  solvetime:     4:10.625 (250625.001 ms)
+%%  solutions:     0
+%%  variables:     80
+%%  propagators:   1533
+%%  propagations:  909705614
+%%  nodes:         8390437
+%%  failures:      4275231
+%%  restarts:      0
+%%  peak depth:    32
+
+$ mzn-gecode colDec.mzn g80.dzn -s -Dk=12 -p32
+%%  runtime:       20.642 (20642.164 ms)
+%%  runtime:       21.168 (21168.189 ms)
+%%  runtime:       21.896 (21896.198 ms)
+%%  runtime:       20.773 (20773.895 ms)
+%%  runtime:       21.291 (21291.617 ms)
+%%  runtime:       21.229 (21229.889 ms)
+%%  runtime:       21.994 (21994.265 ms)
+%%  runtime:       21.929 (21929.667 ms)
+%%  runtime:       20.992 (20992.017 ms)
+%%  runtime:       21.269 (21269.629 ms)

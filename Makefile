@@ -12,7 +12,11 @@ GRAPHS = \
 	 gen-graph-scatter-dds.pdf \
 	 gen-graph-scatter-final.pdf \
 	 gen-graph-scatter-random.pdf \
-	 gen-graph-scatter-random-goods.pdf
+	 gen-graph-scatter-random-goods.pdf \
+	 gen-graph-gcol-decisions.pdf \
+	 gen-graph-value-ordering-heuristics.pdf \
+	 gen-graph-value-ordering-heuristics-unsat.pdf \
+	 gen-graph-restarts.pdf
 
 graphs : $(GRAPHS)
 

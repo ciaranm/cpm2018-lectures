@@ -1,0 +1,11 @@
+=====UNSATISFIABLE=====
+%%  runtime:       0.891 (891.511 ms)
+%%  solvetime:     0.877 (877.555 ms)
+%%  solutions:     0
+%%  variables:     80
+%%  propagators:   1532
+%%  propagations:  177578
+%%  nodes:         1404
+%%  failures:      716
+%%  restarts:      0
+%%  peak depth:    18
