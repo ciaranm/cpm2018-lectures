@@ -1,0 +1,19 @@
+2 3 4 9 7 5 8 1 6 
+1 8 9 4 6 2 7 3 5 
+6 7 5 1 8 3 9 4 2 
+3 6 8 5 1 9 4 2 7 
+9 4 7 3 2 6 5 8 1 
+5 1 2 7 4 8 3 6 9 
+8 5 1 6 3 7 2 9 4 
+4 9 3 2 5 1 6 7 8 
+7 2 6 8 9 4 1 5 3 
+
+- Complete search - 1 solution found.
+	Model[Sudoku]
+	Solutions: 1
+	Building time : 0.040s
+	Resolution time : 0.021s
+	Nodes: 2 (94.1 n/s) 
+	Backtracks: 1
+	Fails: 1
+	Restarts: 0

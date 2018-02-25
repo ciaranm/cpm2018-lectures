@@ -1,0 +1,22 @@
+# line styles
+set style line  1 lt 1 lw 2 lc rgb '#003866' # university blue
+set style line  2 lt 1 lw 2 lc rgb '#00b5d1' # turquoise
+set style line  3 lt 1 lw 2 lc rgb '#5b4d94' # lavendar
+set style line  4 lt 1 lw 2 lc rgb '#951272' # thistle
+set style line  5 lt 1 lw 2 lc rgb '#00843d' # leaf
+set style line  6 lt 1 lw 2 lc rgb '#ffb948' # pumpkin
+set style line  7 lt 1 lw 2 lc rgb '#b30c00' # pillarbox
+set style line  8 lt 1 lw 2 lc rgb '#be4d00' # rust
+set style line  9 lt 1 lw 2 lc rgb '#b06c96' # rose
+
+# palette
+set palette defined (\
+0 '#003866',\
+1 '#00b5d1',\
+2 '#5b4d94',\
+3 '#951272',\
+4 '#00843d',\
+5 '#ffb948',\
+6 '#b30c00',\
+7 '#be4d00',\
+8 '#b06c96')

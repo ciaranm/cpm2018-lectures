@@ -1,0 +1,493 @@
+% vim: set spell spelllang=en tw=100 et sw=4 sts=4 foldmethod=marker foldmarker={{{,}}} :
+
+\documentclass{beamer}
+
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{complexity}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{amsmath}                   % \operatorname
+\usepackage{amsfonts}                  % \mathcal
+\usepackage{amssymb}                   % \nexists
+\usepackage{gnuplot-lua-tikz}          % graphs
+\usepackage[vlined]{algorithm2e} % algorithms
+\usepackage{centernot}
+\usepackage{mathtools}
+\usepackage{listings}
+
+\usetikzlibrary{shapes, arrows, shadows, calc, positioning, fit}
+\usetikzlibrary{decorations.pathreplacing, decorations.pathmorphing, shapes.misc}
+\usetikzlibrary{tikzmark}
+
+\definecolor{uofguniversityblue}{rgb}{0, 0.219608, 0.396078}
+
+\definecolor{uofgheather}{rgb}{0.356863, 0.32549, 0.490196}
+\definecolor{uofgaquamarine}{rgb}{0.603922, 0.72549, 0.678431}
+\definecolor{uofgslate}{rgb}{0.309804, 0.34902, 0.380392}
+\definecolor{uofgrose}{rgb}{0.823529, 0.470588, 0.709804}
+\definecolor{uofgmocha}{rgb}{0.709804, 0.564706, 0.47451}
+\definecolor{uofgsandstone}{rgb}{0.321569, 0.278431, 0.231373}
+\definecolor{uofgforest}{rgb}{0, 0.2, 0.129412}
+\definecolor{uofglawn}{rgb}{0.517647, 0.741176, 0}
+\definecolor{uofgcobalt}{rgb}{0, 0.615686, 0.92549}
+\definecolor{uofgturquoise}{rgb}{0, 0.709804, 0.819608}
+\definecolor{uofgsunshine}{rgb}{1.0, 0.862745, 0.211765}
+\definecolor{uofgpumpkin}{rgb}{1.0, 0.72549, 0.282353}
+\definecolor{uofgthistle}{rgb}{0.584314, 0.070588, 0.447059}
+\definecolor{uofgrust}{rgb}{0.603922, 0.227451, 0.023529}
+\definecolor{uofgburgundy}{rgb}{0.490196, 0.133333, 0.223529}
+\definecolor{uofgpillarbox}{rgb}{0.701961, 0.047059, 0}
+\definecolor{uofglavendar}{rgb}{0.356863, 0.301961, 0.580392}
+
+\tikzset{vertex/.style={draw, circle, inner sep=0pt, minimum size=0.5cm, font=\small\bfseries}}
+\tikzset{notvertex/.style={vertex, color=white, text=black}}
+\tikzset{plainvertex/.style={vertex}}
+\tikzset{vertexc1/.style={vertex, fill=uofgburgundy, text=white}}
+\tikzset{vertexc2/.style={vertex, fill=uofgsandstone, text=white}}
+\tikzset{vertexc3/.style={vertex, fill=uofgforest, text=white}}
+\tikzset{vertexc4/.style={vertex, fill=uofgheather, text=white}}
+\tikzset{edge/.style={color=black!50!white}}
+\tikzset{bedge/.style={ultra thick}}
+\tikzset{edged/.style={color=screengrey, dashed}}
+\tikzset{edgel3/.style={color=uofgrose, ultra thick}}
+
+% {{{ theme things
+\useoutertheme[footline=authortitle]{miniframes}
+\useinnertheme{rectangles}
+
+\setbeamerfont{block title}{size={}}
+\setbeamerfont{title}{size=\large,series=\bfseries}
+\setbeamerfont{section title}{size=\large,series=\mdseries}
+\setbeamerfont{author}{size=\normalsize,series=\mdseries}
+\setbeamercolor*{structure}{fg=uofguniversityblue}
+\setbeamercolor*{palette primary}{use=structure,fg=black,bg=white}
+\setbeamercolor*{palette secondary}{use=structure,fg=white,bg=uofgcobalt}
+\setbeamercolor*{palette tertiary}{use=structure,fg=white,bg=uofguniversityblue}
+\setbeamercolor*{palette quaternary}{fg=white,bg=black}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+
+\beamertemplatenavigationsymbolsempty
+
+\setbeamertemplate{title page}
+{
+    \begin{tikzpicture}[remember picture, overlay]
+        \node at (current page.north west) {
+            \begin{tikzpicture}[remember picture, overlay]
+                \fill [fill=uofguniversityblue, anchor=north west] (0, 0) rectangle (\paperwidth, -2.6cm);
+            \end{tikzpicture}
+        };
+
+        \node (logo) [anchor=north east, shift={(-0.6cm,-0.6cm)}] at (current page.north east) {
+            \includegraphics[keepaspectratio=true,scale=0.7]{UoG_keyline.pdf}
+        };
+
+        \node [anchor=west, xshift=0.2cm] at (current page.west |- logo.west) {
+            \begin{minipage}{0.65\paperwidth}\raggedright
+                {\usebeamerfont{title}\usebeamercolor[white]{}\inserttitle}\\[0.1cm]
+                {\usebeamerfont{author}\usebeamercolor[white]{}\insertauthor}
+            \end{minipage}
+        };
+    \end{tikzpicture}
+}
+
+\setbeamertemplate{section page}
+{
+    \begin{centering}
+        \begin{beamercolorbox}[sep=12pt,center]{part title}
+            \usebeamerfont{section title}\insertsection\par
+        \end{beamercolorbox}
+    \end{centering}
+}
+
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+
+\makeatletter
+\setbeamertemplate{footline}
+{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+        leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+        \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+        \hfill%
+        {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+        leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+        {\usebeamerfont{title in head/foot}\insertshorttitle}%
+        \hfill%
+        {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+    \end{beamercolorbox}
+}
+
+% }}}
+
+\title{Value-Ordering and Discrepancies}
+\author[Ciaran McCreesh and Patrick Prosser]{\textbf{Ciaran McCreesh} and Patrick Prosser}
+
+\begin{document}
+
+{
+    \usebackgroundtemplate{
+        \tikz[overlay, remember picture]
+        \node[at=(current page.south), anchor=south, inner sep=0pt]{\includegraphics[keepaspectratio=true, width=\paperwidth]{background2.jpg}};
+    }
+    \begin{frame}[plain,noframenumbering]
+        \titlepage
+    \end{frame}
+}
+
+\begin{frame}{Maintaining Arc Consistency (MAC)}
+    \only<1> {
+        \begin{itemize}
+            \item Achieve (generalised) arc consistency (AC3, etc).
+            \item If we have a domain wipeout, backtrack.
+            \item If all domains have one value, we're done.
+            \item Pick a variable (using a heuristic) with more than one value, then branch:
+                \begin{itemize}
+                    \item Try giving it one of its possible values (using a heuristic), and recurse.
+                    \item If that failed, reject that value, pick a new value, and try again.
+                    \item If we run out of values, backtrack.
+                \end{itemize}
+        \end{itemize}
+    }
+\end{frame}
+
+\begin{frame}{Search as a Tree}
+
+    \centering
+    \begin{tikzpicture}[scale=0.75]%{{{
+        \coordinate (R);
+
+        \coordinate (N) at (R);
+
+        \coordinate (N1) at ($(N) + (-4, -1.25)$);
+        \coordinate (N2) at ($(N) + ( 0, -1.25)$);
+        \coordinate (N3) at ($(N) + ( 4, -1.25)$);
+
+        \foreach \na in {1, ..., 3}{
+            \coordinate (N\na 1) at ($(N\na) + (-1.25, -1)$);
+            \coordinate (N\na 2) at ($(N\na) + ( 0,    -1)$);
+            \coordinate (N\na 3) at ($(N\na) + ( 1.25, -1)$);
+
+            \foreach \nb in {1, ..., 3}{
+                \coordinate (N\na\nb t1) at ($(N\na\nb) + (-0.5, -1)$);
+                \coordinate (N\na\nb t2) at ($(N\na\nb) + ( 0.5, -1)$);
+            }
+        }
+
+        \foreach \na in {1, ..., 3}{
+            \draw (N) -- (N\na);
+            \foreach \nb in {1, ..., 3}{
+                \draw (N\na) -- (N\na\nb);
+            }
+        }
+
+        \tikzstyle{t} = [draw, fill, fill=uofgcobalt, rounded corners];
+        \foreach \na in {1, ..., 3}{
+            \foreach \nb in {1, ..., 3}{
+                \draw [t] (N\na\nb) -- (N\na\nb t1) -- (N\na\nb t2) -- cycle;
+            }
+        }
+
+        \tikzstyle{c} = [draw, circle, fill, fill=uofgcobalt];
+        \node [c] at (N) { };
+
+        \foreach \na in {1, ..., 3}{
+            \node [c] at (N\na) { };
+
+            \foreach \nb in {1, ..., 3}{
+                \node [c] at (N\na\nb) { };
+            }
+        }
+    \end{tikzpicture}%}}}
+
+    \vspace{1em}
+
+    \begin{itemize}
+        \item Circles are recursive calls, triangles are `big' subproblems.
+        \item Heuristics determine the `shape' of the tree.
+        \item MAC is like Depth-First Search (DFS).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Variable-Ordering Heuristics}
+    \begin{itemize}
+        \item Variable-ordering heuristics determine the number of children at each level of the
+            search tree.
+        \item We have quite good general-purpose variable-ordering heuristics:
+            \begin{itemize}
+                \item Smallest domain first (but not for 0/1 encodings).
+                \item Most constrained first.
+            \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Value-Ordering Heuristics}
+    \begin{itemize}
+        \item Value-ordering heuristics determine the paths taken through the search tree.
+        \item Designing value-ordering heuristics can be harder\ldots
+        \item For MAC, value-ordering heuristics only matter for satisfiable instances, and for
+            optimisation problems.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Subgraph Isomorphism}
+
+    \only<1-2> {
+    \begin{center}\begin{tikzpicture}
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (Na) at (1,  0) {1};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (Nb) at (1, -1.5) {2};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (Nc) at (0, -3) {3};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (Nd) at (2, -3) {4};
+
+        \node <2> [draw, circle, fill=uofgcobalt, inner sep=4pt, font=\bfseries] (Na) at (1,  0) {1};
+        \node <2> [draw, circle, fill=uofgpumpkin, inner sep=4pt, font=\bfseries] (Nb) at (1, -1.5) {2};
+        \node <2> [draw, circle, fill=uofglawn, inner sep=4pt, font=\bfseries] (Nc) at (0, -3) {3};
+        \node <2> [draw, circle, fill=uofgthistle, inner sep=4pt, font=\bfseries] (Nd) at (2, -3) {4};
+
+        \draw <1> [thick, color=uofgsandstone!50] (Na) -- (Nb);
+        \draw <1> [thick, color=uofgsandstone!50] (Nb) -- (Nc);
+        \draw <1> [thick, color=uofgsandstone!50] (Nc) -- (Nd);
+        \draw <1> [thick, color=uofgsandstone!50] (Nb) -- (Nd);
+
+        \draw <2> [ultra thick] (Na) -- (Nb);
+        \draw <2> [ultra thick] (Nb) -- (Nc);
+        \draw <2> [ultra thick] (Nc) -- (Nd);
+        \draw <2> [ultra thick] (Nb) -- (Nd);
+
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N1) at (5.5,  0) {1};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N2) at (7.5,  0) {2};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N3) at (5.5, -1.5) {3};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N4) at (7.5, -1.5) {4};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N5) at (5.5, -3) {5};
+        \node <1> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N6) at (7.5, -3) {6};
+
+        \node <2> [draw, circle, fill=uofgcobalt, inner sep=4pt, font=\bfseries] (N1) at (5.5,  0) {1};
+        \node <2> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N2) at (7.5,  0) {2};
+        \node <2> [draw, circle, fill=uofgpumpkin, inner sep=4pt, font=\bfseries] (N3) at (5.5, -1.5) {3};
+        \node <2> [draw, circle, fill=white, inner sep=4pt, font=\bfseries] (N4) at (7.5, -1.5) {4};
+        \node <2> [draw, circle, fill=uofglawn, inner sep=4pt, font=\bfseries] (N5) at (5.5, -3) {5};
+        \node <2> [draw, circle, fill=uofgthistle, inner sep=4pt, font=\bfseries] (N6) at (7.5, -3) {6};
+
+        \draw <1> [thick, color=uofgsandstone!50] (N1) -- (N2);
+        \draw <1> [thick, color=uofgsandstone!50] (N1) -- (N3);
+        \draw <1> [thick, color=uofgsandstone!50] (N1) -- (N4);
+        \draw <1> [thick, color=uofgsandstone!50] (N2) -- (N4);
+        \draw <1> [thick, color=uofgsandstone!50] (N3) -- (N5);
+        \draw <1> [thick, color=uofgsandstone!50] (N3) -- (N6);
+        \draw <1> [thick, color=uofgsandstone!50] (N4) -- (N6);
+        \draw <1> [thick, color=uofgsandstone!50] (N5) -- (N6);
+        \draw <1> [thick, color=uofgsandstone!50] (N2) to [in=45, out=315] (N6);
+        \draw <1> [thick, color=uofgsandstone!50] (N1) to [in=135, out=225] (N5);
+
+        \draw <2> [thick, color=uofgsandstone!50] (N1) -- (N2);
+        \draw <2> [ultra thick] (N1) -- (N3);
+        \draw <2> [thick, color=uofgsandstone!50] (N1) -- (N4);
+        \draw <2> [thick, color=uofgsandstone!50] (N2) -- (N4);
+        \draw <2> [ultra thick] (N3) -- (N5);
+        \draw <2> [ultra thick] (N3) -- (N6);
+        \draw <2> [thick, color=uofgsandstone!50] (N4) -- (N6);
+        \draw <2> [ultra thick] (N5) -- (N6);
+        \draw <2> [thick, color=uofgsandstone!50] (N2) to [in=45, out=315] (N6);
+        \draw <2> [thick, color=uofgsandstone!50] (N1) to [in=135, out=225] (N5);
+    \end{tikzpicture}\end{center}
+}\only<3>{
+    \begin{itemize}
+        \item A variable for each vertex in the pattern graph.
+            \begin{itemize}
+                \item Smallest domain first.
+                \item Tiebreak on highest degree first.
+            \end{itemize}
+        \item Domains are target vertices.
+            \begin{itemize}
+                \item Highest degree to lowest.
+            \end{itemize}
+    \end{itemize}
+}
+
+\end{frame}
+
+\begin{frame}{Heuristics and Discrepancies}
+    \begin{itemize}
+        \item If our value-ordering heuristics are perfect, and an instance is satisfiable, we walk
+            straight to a solution by going left at every level.
+        \item If an instance is unsatisfiable, perfect variable-ordering heuristics would give the
+            smallest possible search tree.
+        \item But heuristics aren't perfect\ldots
+        \item We call going against a value-ordering heuristic choice a ``discrepancy''.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Two Claims About Value-Ordering Heuristics}
+
+    \centering
+    \includegraphics[keepaspectratio=true,scale=0.3]{lds-paper.png}
+    \vspace{1em}
+
+    \begin{enumerate}
+        \item The total number of discrepancies to find a solution is usually low (our
+            value-ordering heuristics are \emph{usually} right).
+        \item Value-ordering heuristics are most likely to wrong higher up in the tree (there is
+            least information available when no or few choices have been made).
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{So What?}
+    \begin{itemize}
+        \item If these claims are true, depth-first search is a bad idea: we're committing entirely
+            to the first decision made, which is most likely to be wrong.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Limited Discrepancy Search}
+    \setbeamertemplate{itemize/enumerate body begin}{\footnotesize}
+    \setbeamertemplate{itemize/enumerate subbody begin}{\scriptsize}
+
+    \begin{columns}[T]
+        \column{.6\textwidth}
+        \begin{itemize}
+            \item First, search with no discrepancies.
+            \item Then search allowing one discrepancy.
+                \begin{itemize}
+                    \item First try one discrepancy at the top.
+                    \item Then try one discrepancy at the second level.
+                    \item Then try one discrepancy at the third level.
+                    \item \ldots
+                \end{itemize}
+            \item Then search allowing two discrepancies.
+                \begin{itemize}
+                    \item At the top, and at the second level.
+                    \item Then at the top, and at the third level.
+                    \item \ldots
+                    \item Then at the second level and the third level.
+                    \item \ldots
+                \end{itemize}
+            \item \ldots
+        \end{itemize}
+
+        \column{.4\textwidth}
+        \centering\includegraphics[keepaspectratio=true,scale=0.18]{lds-tree.png}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Completeness}
+    \begin{columns}
+        \column{.75\textwidth}
+        \begin{itemize}
+            \item Complete: yes means yes, no means no.
+            \item Incomplete: yes means yes, no means maybe.
+            \item LDS is \emph{quasi-complete}: if the total number of discrepancies is allowed to go
+                high enough, it is complete.
+            \item Discrepancy searches do more total work if there is no solution, and make
+                optimality proofs longer.
+        \end{itemize}
+        \column{.25\textwidth}
+        \centering\includegraphics[keepaspectratio=true,scale=0.4]{quasi.jpg}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Non-Binary Trees?}
+    \begin{itemize}
+        \item We can rewrite our search tree to be binary. Instead of branching on each value for a
+            variable in a loop, pick a variable and a value, and branch twice:
+
+            \begin{itemize}
+                \item Yes, the variable takes that value.
+                \item No, the variable does not take that value.
+            \end{itemize}
+
+        \item But this means that giving the 10th value to a variable counts as 9 discrepancies. Is
+            this good or bad?
+
+        \item Alternatively, we can treat the left branch as no discrepancy, and all right branches
+            as discrepancies.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Using LDS?}
+    \begin{center}
+        \includegraphics[keepaspectratio=true,scale=0.2]{lds-patent.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Depth-Bounded Discrepancy Search}
+    \centering\includegraphics[keepaspectratio=true,scale=0.2]{dds-paper.png}
+    \vspace{1em}
+
+    \begin{columns}[T]
+        \column{.55\textwidth}
+        \begin{itemize}
+            \item If the second claim \emph{is} important, why not emphasise it more?
+
+            \item Depth-bounded discrepancy search considers $k$ discrepancies, but only at depth up
+                to $k - 1$ (but in which order?).
+        \end{itemize}
+        \column{.45\textwidth}
+        \centering\includegraphics[keepaspectratio=true,scale=0.2]{dds-tree.png}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{DDS for Subgraph Isomorphism}
+    \includegraphics{gen-graph-scatter-dds.pdf}
+\end{frame}
+
+\begin{frame}{Restarts?}
+    \only<1>{%
+        \begin{itemize}
+            \item Run for a bit, then restart and try something else.
+            \item Need to change something when we restart: what about just using a random
+                value-ordering heuristic?
+        \end{itemize}
+    }\only<2> {%
+        \includegraphics{gen-graph-scatter-random-goods.pdf}
+    }\only<3> {%
+        \begin{itemize}
+            \item Use nogood recording to avoid revisiting parts of the search space?
+        \end{itemize}
+    }\only<4> {%
+        \includegraphics{gen-graph-scatter-random.pdf}
+    }\only<5> {%
+        \begin{itemize}
+        \item Select a vertex $v'$ from the chosen domain $D_v$ with
+            probability \[ p(v') = \frac{2^{\deg(v')}}{\sum_{w \in D_v}{2^{\deg(w)}}} \text{.} \]
+        \end{itemize}
+    }\only<6> {%
+        \includegraphics{gen-graph-scatter-final.pdf}
+    }
+\end{frame}
+
+\begin{frame}{This is Not The Exam Question}
+
+    What are the two assumptions regarding value ordering heuristics which underlie limited
+    discrepancy search? \\[0.5cm]
+
+    Why are discrepancy searches a bad choice if instances are expected to be unsatisfiable?
+    \\[0.5cm]
+
+    When using MAC, what effect do value ordering heuristics have on unsatisfiable instances?
+
+\end{frame}
+
+\begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture, overlay]
+        \node at (current page.north west) {
+            \begin{tikzpicture}[remember picture, overlay]
+                \fill [fill=uofguniversityblue, anchor=north west] (0, 0) rectangle (\paperwidth, -1.7cm);
+            \end{tikzpicture}
+        };
+
+        \node (logo) [anchor=north east, shift={(-0.3cm,-0.2cm)}] at (current page.north east) {
+            \includegraphics[keepaspectratio=true,scale=0.55]{UoG_keyline.pdf}
+        };
+    \end{tikzpicture}
+\end{frame}
+
+\end{document}
+
+

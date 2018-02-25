@@ -1,0 +1,9 @@
+Limit reached.
+Model[Sudoku]
+Solutions: 0
+Building time : 0.110s
+Resolution time : 3,600.002s
+Nodes: 9,037,226 (2,510.3 n/s) 
+Backtracks: 18,074,338
+Fails: 9,037,183
+Restarts: 0

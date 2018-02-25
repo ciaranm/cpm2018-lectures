@@ -1,0 +1,9 @@
+1 solution found.
+Model[Sudoku]
+Solutions: 1
+Building time : 0.062s
+Resolution time : 0.203s
+Nodes: 28 (137.6 n/s) 
+Backtracks: 48
+Fails: 26
+Restarts: 0
